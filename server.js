@@ -1,9 +1,9 @@
-var express = require('express'),
+const express = require('express'),
     request = require('request'),
     bodyParser = require('body-parser'),
     app = express();
 
-var myLimit = typeof(process.argv[2]) != 'undefined' ? process.argv[2] : '100kb';
+const myLimit = typeof(process.argv[2]) != 'undefined' ? process.argv[2] : '100kb';
 console.log('Using limit: ', myLimit);
 
 app.use(bodyParser.json({limit: myLimit}));
@@ -19,13 +19,12 @@ app.all('*', function (req, res, next) {
         // CORS Preflight
         res.send();
     } else {
-        var targetURL = req.header('target-url');
-        var apiKey = req.header('x-api-key');
+        const targetURL = req.header('target-url');
         if (!targetURL) {
             res.send(500, { error: 'There is no Target-Endpoint header in the request' });
             return;
         }
-        var headers = {}
+        const headers = {}
         if(req.header('WebApiAuthTicket')) headers['WebApiAuthTicket'] = req.header('WebApiAuthTicket');
         if(req.header('deviceId')) headers['deviceId'] = req.header('deviceId');
         if(req.header('deviceType')) headers['deviceType'] = req.header('deviceType');
